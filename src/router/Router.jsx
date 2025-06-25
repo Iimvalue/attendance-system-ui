@@ -4,6 +4,7 @@ import AdminDashboard from "../pages/admin/AdminDashboard";
 import PrincipleDashboard from "../pages/principle/PrincipleDashboard";
 import TeacherDashboard from "../pages/teacher/TeacherDashboard";
 import StudentDashboard from "../pages/student/StudentDashboard";
+import LoginPage from "../pages/LoginPage";
 
 function Layout() {
   return (
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { path: "principle", element: <PrincipleDashboard /> },
       { path: "teacher", element: <TeacherDashboard /> },
       { path: "student", element: <StudentDashboard /> },
+      { path: "login", element: <LoginPage /> },
     ],
   },
 ]);

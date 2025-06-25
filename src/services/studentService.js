@@ -1,31 +1,22 @@
-import axios from "axios";
+import axiosInstance from "./axiosInstance"; 
 
-const BASE_URL = "https://6836b885664e72d28e41d28e.mockapi.io/api/register";
+
+export const getAllStudents = async () => {
+  const response = await axiosInstance.get("/users");
+  return response.data.filter((item) => item.role === "student");
+};
+
 
 export const getUnassignedStudents = async () => {
-  const res = await axios.get(BASE_URL);
-
+  const res = await axiosInstance.get("/users");
   return res.data.filter(
     (item) => item.role === "student" && item.assigned === false
   );
 };
-export const assignStudentsToClass = async (classId, studentIds) => {
-    const requests = studentIds.map((id) =>
-      axios.put(`${BASE_URL}/${id}`, {
-        classId,
-        assigned: true,
-      })
-    );
-    return Promise.all(requests);
-  };
-export const getAllStudents = async () => {
-  const response = await axios.get(BASE_URL);
 
-  return response.data.filter((item) => item.role === "student");
-};
 
 export const addStudent = async (student) => {
-  const response = await axios.post(BASE_URL, {
+  const response = await axiosInstance.post("/users", {
     ...student,
     role: "student",
     assigned: false,
@@ -33,25 +24,36 @@ export const addStudent = async (student) => {
   return response.data;
 };
 
+
 export const deleteStudent = async (id) => {
-  await axios.delete(`${BASE_URL}/${id}`);
+  await axiosInstance.delete(`/users/${id}`);
 };
 
-export const assignStudent = async (id, assigned) => {
-  const response = await axios.put(`${BASE_URL}/${id}`, { assigned });
+
+export const updateStudent = async (id, data) => {
+  const response = await axiosInstance.put(`/users/update/${id}`, data);
   return response.data;
 };
 
-export const updateStudent = async (id, data) => {
-  const res = await axios.put(`${BASE_URL}/${id}`, data);
-  return res.data;
+
+export const assignStudent = async (id, assigned) => {
+  const response = await axiosInstance.put(`/users/update/${id}`, { assigned });
+  return response.data;
 };
-// export const getStudentProfile = async (studentId) => {
-//     const response = await axios.get(`${BASE_URL}/${studentId}`);
-//     return response.data;
-//   };
+
+
+export const assignStudentsToClass = async (classId, studentIds) => {
+  const requests = studentIds.map((id) =>
+    axiosInstance.put(`/users/update/${id}`, {
+      classId,
+      assigned: true,
+    })
+  );
+  return Promise.all(requests);
+};
+
 
 export const getStudentProfile = async () => {
-    const response = await axios.get(BASE_URL);
-    return response.data.find((item) => item.role === "student");
-  };
+  const response = await axiosInstance.get("/users");
+  return response.data.find((item) => item.role === "student");
+};

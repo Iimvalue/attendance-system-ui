@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-
+import axiosInstance from "../../services/axiosInstance";
 import {
   Menu,
   X,
@@ -25,8 +24,6 @@ import TeacherAssignment from "./TeacherAssignment";
 import PrincipleAssignment from "./PrincipleAssignment";
 import ExcusesManagement from "./ExcusesManagement";
 import Reports from "./Reports.jsx";
-
-const API = "https://6836b885664e72d28e41d28e.mockapi.io/api/register";
 
 const menuItems = [
   { name: "Dashboard", icon: Home },
@@ -69,13 +66,13 @@ const AdminDashboard = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const { data } = await axios.get(API);
+        const { data } = await axiosInstance.get("/users");
         setCounts({
           students: data.filter((item) => item.role === "student").length,
           teachers: data.filter((item) => item.role === "teacher").length,
           principles: data.filter((item) => item.role === "principle").length,
           excuses: data.filter((item) => item.role === "excuse").length,
-          absences: 0, // عدّل هنا إذا لديك مصدر بيانات للغيابات
+          absences: 0,
         });
       } catch (error) {
         console.error("فشل تحميل البيانات", error);
@@ -109,12 +106,9 @@ const AdminDashboard = () => {
 
   const renderContent = () => {
     if (loading) return <div className="text-center p-10 text-lg">...جاري التحميل</div>;
-
     if (activePage === "Dashboard") return renderDashboard();
-
     const PageComponent = pageComponents[activePage];
     if (PageComponent) return <PageComponent />;
-
     return (
       <div className="px-4 py-6 w-full max-w-4xl mx-auto">
         <h2 className="text-2xl sm:text-3xl text-right font-bold mb-4 text-[#5196ac]">
@@ -183,7 +177,6 @@ const AdminDashboard = () => {
           </button>
           <span className="font-bold text-[#5196ac]">لوحة الأدمن</span>
         </div>
-
         <div className="p-6">{renderContent()}</div>
       </div>
     </div>
