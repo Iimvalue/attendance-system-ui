@@ -96,14 +96,15 @@ const StudentManagement = () => {
   };
 
   return (
-    <div dir="rtl" className="max-w-6xl mx-auto space-y-6">
+    <div dir="rtl" className="max-w-6xl mx-auto space-y-6 px-4 py-6">
+
       <div className="bg-white p-4 rounded-xl shadow">
         <h3 className="text-xl font-bold text-[#5196ac] mb-4">إضافة طالب</h3>
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-wrap">
           <input
             type="text"
             placeholder="اسم الطالب"
-            className="border p-2 rounded w-full"
+            className="border p-2 rounded w-full sm:w-auto flex-1"
             value={newStudent.name}
             onChange={(e) =>
               setNewStudent({ ...newStudent, name: e.target.value })
@@ -112,14 +113,14 @@ const StudentManagement = () => {
           <input
             type="email"
             placeholder="البريد الإلكتروني"
-            className="border p-2 rounded w-full"
+            className="border p-2 rounded w-full sm:w-auto flex-1"
             value={newStudent.email}
             onChange={(e) =>
               setNewStudent({ ...newStudent, email: e.target.value })
             }
           />
           <button
-            className="bg-[#5196ac] text-white px-4 py-2 rounded"
+            className="bg-[#5196ac] text-white px-4 py-2 rounded w-full sm:w-auto"
             onClick={handleAddStudent}
           >
             إضافة
@@ -127,9 +128,10 @@ const StudentManagement = () => {
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-xl shadow">
+
+      <div className="bg-white p-4 rounded-xl shadow overflow-x-auto">
         <h3 className="text-xl font-bold text-[#5196ac] mb-4">قائمة الطلاب</h3>
-        <table className="w-full text-center text-sm">
+        <table className="min-w-[600px] w-full text-center text-sm">
           <thead>
             <tr className="bg-[#5196ac] text-white">
               <th className="py-2 px-3">ID</th>

@@ -91,14 +91,15 @@ const TeachersManagement = () => {
   };
 
   return (
-    <div dir="rtl" className="max-w-6xl mx-auto space-y-6">
+    <div dir="rtl" className="max-w-6xl mx-auto space-y-6 px-4 py-6">
+      {/* إضافة معلم */}
       <div className="bg-white p-4 rounded-xl shadow">
         <h3 className="text-xl font-bold text-[#5196ac] mb-4">إضافة معلم</h3>
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-wrap">
           <input
             type="text"
             placeholder="اسم المعلم"
-            className="border p-2 rounded w-full"
+            className="border p-2 rounded w-full sm:w-auto flex-1"
             value={newTeacher.name}
             onChange={(e) =>
               setNewTeacher({ ...newTeacher, name: e.target.value })
@@ -107,14 +108,14 @@ const TeachersManagement = () => {
           <input
             type="email"
             placeholder="البريد الإلكتروني"
-            className="border p-2 rounded w-full"
+            className="border p-2 rounded w-full sm:w-auto flex-1"
             value={newTeacher.email}
             onChange={(e) =>
               setNewTeacher({ ...newTeacher, email: e.target.value })
             }
           />
           <button
-            className="bg-[#5196ac] text-white px-4 py-2 rounded"
+            className="bg-[#5196ac] text-white px-4 py-2 rounded w-full sm:w-auto"
             onClick={handleAddTeacher}
           >
             إضافة
@@ -122,9 +123,10 @@ const TeachersManagement = () => {
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-xl shadow">
+      {/* جدول المعلمين */}
+      <div className="bg-white p-4 rounded-xl shadow overflow-x-auto">
         <h3 className="text-xl font-bold text-[#5196ac] mb-4">قائمة المعلمين</h3>
-        <table className="w-full text-center text-sm">
+        <table className="min-w-[600px] w-full text-center text-sm">
           <thead>
             <tr className="bg-[#5196ac] text-white">
               <th className="py-2 px-3">ID</th>
@@ -142,7 +144,10 @@ const TeachersManagement = () => {
               </tr>
             ) : (
               teachers.map((teacher) => (
-                <tr key={teacher.id} className="border-t hover:bg-gray-50 transition">
+                <tr
+                  key={teacher.id}
+                  className="border-t hover:bg-gray-50 transition"
+                >
                   <td className="py-2 px-3">{teacher.id}</td>
                   <td className="py-2 px-3">{teacher.name}</td>
                   <td className="py-2 px-3">{teacher.email}</td>
