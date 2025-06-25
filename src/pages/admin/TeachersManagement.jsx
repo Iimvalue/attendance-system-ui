@@ -92,7 +92,6 @@ const TeachersManagement = () => {
 
   return (
     <div dir="rtl" className="max-w-6xl mx-auto space-y-6 px-4 py-6">
-      {/* إضافة معلم */}
       <div className="bg-white p-4 rounded-xl shadow">
         <h3 className="text-xl font-bold text-[#5196ac] mb-4">إضافة معلم</h3>
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-wrap">
@@ -123,9 +122,10 @@ const TeachersManagement = () => {
         </div>
       </div>
 
-      {/* جدول المعلمين */}
       <div className="bg-white p-4 rounded-xl shadow overflow-x-auto">
-        <h3 className="text-xl font-bold text-[#5196ac] mb-4">قائمة المعلمين</h3>
+        <h3 className="text-xl font-bold text-[#5196ac] mb-4">
+          قائمة المعلمين
+        </h3>
         <table className="min-w-[600px] w-full text-center text-sm">
           <thead>
             <tr className="bg-[#5196ac] text-white">
