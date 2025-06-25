@@ -13,8 +13,17 @@ const StudentManagement = () => {
   const [newStudent, setNewStudent] = useState({ name: "", email: "" });
 
   useEffect(() => {
-    getAllStudents().then(setStudents);
+    loadStudents();
   }, []);
+
+  const loadStudents = async () => {
+    try {
+      const data = await getAllStudents();
+      setStudents(data);
+    } catch {
+      Swal.fire("خطأ", "فشل تحميل بيانات الطلاب", "error");
+    }
+  };
 
   const handleAddStudent = async () => {
     if (!newStudent.name || !newStudent.email) {
@@ -56,19 +65,11 @@ const StudentManagement = () => {
     const { value: formValues } = await Swal.fire({
       title: "تعديل الطالب",
       html: `
-        <input id="swal-name" class="swal2-input" placeholder="الاسم" value="${
-          student.name
-        }" />
-        <input id="swal-email" class="swal2-input" placeholder="البريد الإلكتروني" value="${
-          student.email
-        }" />
+        <input id="swal-name" class="swal2-input" placeholder="الاسم" value="${student.name}" />
+        <input id="swal-email" class="swal2-input" placeholder="البريد الإلكتروني" value="${student.email}" />
         <select id="swal-status" class="swal2-select">
-          <option value="true" ${
-            student.assigned ? "selected" : ""
-          }>يدرس</option>
-          <option value="false" ${
-            !student.assigned ? "selected" : ""
-          }> لا يدرس</option>
+          <option value="true" ${student.assigned ? "selected" : ""}>يدرس</option>
+          <option value="false" ${!student.assigned ? "selected" : ""}>لا يدرس</option>
         </select>
       `,
       focusConfirm: false,
@@ -134,7 +135,6 @@ const StudentManagement = () => {
               <th className="py-2 px-3">ID</th>
               <th className="py-2 px-3">الاسم</th>
               <th className="py-2 px-3">البريد الإلكتروني</th>
-              <th className="py-2 px-3">الدور</th>
               <th className="py-2 px-3">الحالة</th>
               <th className="py-2 px-3">إجراءات</th>
             </tr>
@@ -142,7 +142,7 @@ const StudentManagement = () => {
           <tbody>
             {students.length === 0 ? (
               <tr>
-                <td colSpan="6" className="py-4 text-gray-500">
+                <td colSpan="5" className="py-4 text-gray-500">
                   لا يوجد طلاب حالياً
                 </td>
               </tr>
@@ -155,7 +155,6 @@ const StudentManagement = () => {
                   <td className="py-2 px-3">{student.id}</td>
                   <td className="py-2 px-3">{student.name}</td>
                   <td className="py-2 px-3">{student.email}</td>
-                  <td className="py-2 px-3">{student.role}</td>
                   <td className="py-2 px-3">
                     <span
                       className={`px-2 py-1 rounded-full text-white text-xs ${

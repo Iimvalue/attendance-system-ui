@@ -25,6 +25,8 @@ import PrincipleAssignment from "./PrincipleAssignment";
 import ExcusesManagement from "./ExcusesManagement";
 import Reports from "./Reports.jsx";
 
+const API = "http://localhost:3000/api/users";
+
 const menuItems = [
   { name: "Dashboard", icon: Home },
   { name: "إدارة الطلاب", icon: Users },
@@ -66,7 +68,9 @@ const AdminDashboard = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const { data } = await axiosInstance.get("/users");
+        const response = await axiosInstance.get(API);
+        const data = response.data.data || response.data;
+
         setCounts({
           students: data.filter((item) => item.role === "student").length,
           teachers: data.filter((item) => item.role === "teacher").length,

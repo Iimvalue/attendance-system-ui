@@ -15,3 +15,14 @@ export const signin = async (email, password) => {
 
   return { token, role };
 };
+
+export const signout = async () => {
+  const token = localStorage.getItem("token");
+  await axios.post(
+    `${API_URL}/signout`,
+    {},
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
+};

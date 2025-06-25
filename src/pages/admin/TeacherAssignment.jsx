@@ -5,7 +5,7 @@ import {
   getUnassignedTeachers,
   assignTeachersToClass,
 } from "../../services/teacherService";
-
+// import { assignTeachersToClass } from "../../services/teacherService";
 export default function TeacherAssignment() {
   const [teachers, setTeachers] = useState([]);
   const [classes, setClasses] = useState([]);
