@@ -7,30 +7,38 @@ import {
   getAllExcuses,
   deleteExcuse,
 } from "../../services/excuseService";
+import { getCurrentUser, isAuthenticated, signout } from "../../services/authService";
 
 const PrincipleDashboard = () => {
-  const token = localStorage.getItem("Token");
-  const role = localStorage.getItem("role");
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [excuses, setExcuses] = useState([]);
   const [filter, setFilter] = useState("all");
+  // Removed unused currentUser state
 
-      useEffect(() => {
-  const handleScroll = () => {
-    setIsScrolled(window.scrollY > 20);
-  };
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      navigate("/");
+      return;
+    }
 
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
+    const user = getCurrentUser();
+    if (!user || user.role !== "principle") {
+      navigate("/");
+      return;
+    }
 
-  // useEffect(() => {
-  //   if (!token || role !== "principle") {
-  //     navigate("/");
-  //   }
-  // }, []);
+  }, [navigate]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
 
   useEffect(() => {
@@ -82,9 +90,16 @@ const PrincipleDashboard = () => {
      <div className="px-5 py-4 flex justify-between items-center">
         <div className="hidden md:flex items-center gap-4">
           <button
-              onClick={() => {
-                localStorage.clear();
-                navigate("/");
+              onClick={async () => {
+                try {
+                  await signout();
+                  navigate("/");
+                } catch (error) {
+                  console.error("Logout error:", error);
+                  // Force logout even if API call fails
+                  localStorage.clear();
+                  navigate("/");
+                }
               }}
               className="relative group bg-red-700 text-white px-3 py-2 rounded hover:bg-red-600 w-fit"
             >
@@ -107,10 +122,16 @@ const PrincipleDashboard = () => {
         {menuOpen && (
           <div className="md:hidden px-5 pb-4 flex flex-col gap-3">
             <button
-              // swl ..
-              onClick={() => {
-                localStorage.clear();
-                navigate("/");
+              onClick={async () => {
+                try {
+                  await signout();
+                  navigate("/");
+                } catch (error) {
+                  console.error("Logout error:", error);
+                  // Force logout even if API call fails
+                  localStorage.clear();
+                  navigate("/");
+                }
               }}
               className="bg-red-700 text-white px-4 py-1 rounded hover:bg-red-600 w-full text-start"
             >
@@ -175,7 +196,7 @@ const PrincipleDashboard = () => {
           </tr>
         </thead>
         <tbody >
-          {filteredExcuses.map((e, idx) => (
+          {filteredExcuses.map((e) => (
             <tr key={e.id} className="border-t hover:bg-gray-50">
               <td className="py-2 px-4">{e.studentId || "-"}</td>
               <td className="py-2 px-4">{e.date}</td>

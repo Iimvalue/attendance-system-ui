@@ -24,7 +24,7 @@ export default function SubmitExcuse() {
       Swal.fire("تم الإرسال", "تم إرسال العذر بنجاح", "success");
       setExcuse({ studentId: "", reason: "", date: "" });
     } catch (error) {
-      Swal.fire("خطأ", "حدث خطأ أثناء إرسال العذر", "error");
+      Swal.fire("خطأ", "حدث خطأ أثناء إرسال العذر", error);
     }
   };
 
