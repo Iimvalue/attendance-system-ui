@@ -13,8 +13,17 @@ const StudentManagement = () => {
   const [newStudent, setNewStudent] = useState({ name: "", email: "" });
 
   useEffect(() => {
-    getAllStudents().then(setStudents);
+    loadStudents();
   }, []);
+
+  const loadStudents = async () => {
+    try {
+      const data = await getAllStudents();
+      setStudents(data);
+    } catch {
+      Swal.fire("خطأ", "فشل تحميل بيانات الطلاب", "error");
+    }
+  };
 
   const handleAddStudent = async () => {
     if (!newStudent.name || !newStudent.email) {
@@ -56,19 +65,11 @@ const StudentManagement = () => {
     const { value: formValues } = await Swal.fire({
       title: "تعديل الطالب",
       html: `
-        <input id="swal-name" class="swal2-input" placeholder="الاسم" value="${
-          student.name
-        }" />
-        <input id="swal-email" class="swal2-input" placeholder="البريد الإلكتروني" value="${
-          student.email
-        }" />
+        <input id="swal-name" class="swal2-input" placeholder="الاسم" value="${student.name}" />
+        <input id="swal-email" class="swal2-input" placeholder="البريد الإلكتروني" value="${student.email}" />
         <select id="swal-status" class="swal2-select">
-          <option value="true" ${
-            student.assigned ? "selected" : ""
-          }>يدرس</option>
-          <option value="false" ${
-            !student.assigned ? "selected" : ""
-          }> لا يدرس</option>
+          <option value="true" ${student.assigned ? "selected" : ""}>يدرس</option>
+          <option value="false" ${!student.assigned ? "selected" : ""}>لا يدرس</option>
         </select>
       `,
       focusConfirm: false,
@@ -95,14 +96,15 @@ const StudentManagement = () => {
   };
 
   return (
-    <div dir="rtl" className="max-w-6xl mx-auto space-y-6">
+    <div dir="rtl" className="max-w-6xl mx-auto space-y-6 px-4 py-6">
+
       <div className="bg-white p-4 rounded-xl shadow">
         <h3 className="text-xl font-bold text-[#5196ac] mb-4">إضافة طالب</h3>
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-wrap">
           <input
             type="text"
             placeholder="اسم الطالب"
-            className="border p-2 rounded w-full"
+            className="border p-2 rounded w-full sm:w-auto flex-1"
             value={newStudent.name}
             onChange={(e) =>
               setNewStudent({ ...newStudent, name: e.target.value })
@@ -111,14 +113,14 @@ const StudentManagement = () => {
           <input
             type="email"
             placeholder="البريد الإلكتروني"
-            className="border p-2 rounded w-full"
+            className="border p-2 rounded w-full sm:w-auto flex-1"
             value={newStudent.email}
             onChange={(e) =>
               setNewStudent({ ...newStudent, email: e.target.value })
             }
           />
           <button
-            className="bg-[#5196ac] text-white px-4 py-2 rounded"
+            className="bg-[#5196ac] text-white px-4 py-2 rounded w-full sm:w-auto"
             onClick={handleAddStudent}
           >
             إضافة
@@ -126,15 +128,15 @@ const StudentManagement = () => {
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-xl shadow">
+
+      <div className="bg-white p-4 rounded-xl shadow overflow-x-auto">
         <h3 className="text-xl font-bold text-[#5196ac] mb-4">قائمة الطلاب</h3>
-        <table className="w-full text-center text-sm">
+        <table className="min-w-[600px] w-full text-center text-sm">
           <thead>
             <tr className="bg-[#5196ac] text-white">
               <th className="py-2 px-3">ID</th>
               <th className="py-2 px-3">الاسم</th>
               <th className="py-2 px-3">البريد الإلكتروني</th>
-              <th className="py-2 px-3">الدور</th>
               <th className="py-2 px-3">الحالة</th>
               <th className="py-2 px-3">إجراءات</th>
             </tr>
@@ -142,7 +144,7 @@ const StudentManagement = () => {
           <tbody>
             {students.length === 0 ? (
               <tr>
-                <td colSpan="6" className="py-4 text-gray-500">
+                <td colSpan="5" className="py-4 text-gray-500">
                   لا يوجد طلاب حالياً
                 </td>
               </tr>
@@ -155,7 +157,6 @@ const StudentManagement = () => {
                   <td className="py-2 px-3">{student.id}</td>
                   <td className="py-2 px-3">{student.name}</td>
                   <td className="py-2 px-3">{student.email}</td>
-                  <td className="py-2 px-3">{student.role}</td>
                   <td className="py-2 px-3">
                     <span
                       className={`px-2 py-1 rounded-full text-white text-xs ${
