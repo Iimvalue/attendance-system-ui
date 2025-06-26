@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import {
@@ -57,54 +57,63 @@ const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activePage, setActivePage] = useState("Dashboard");
 
-  const renderContent = () => {
-    // راح تحصلين هذه الفانكشن في ملف src/pages/admin/StudentManagement.jsx
-    if (activePage === "إدارة الطلاب") {
-      return <StudentManagement />;
+  const [counts, setCounts] = useState({
+    students: 0,
+    teachers: 0,
+    principles: 0,
+    excuses: 0,
+    absences: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { data } = await axios.get(API);
+        setCounts({
+          students: data.filter((item) => item.role === "student").length,
+          teachers: data.filter((item) => item.role === "teacher").length,
+          principles: data.filter((item) => item.role === "principle").length,
+          excuses: data.filter((item) => item.role === "excuse").length,
+          absences: 0, // عدّل هنا إذا لديك مصدر بيانات للغيابات
+        });
+      } catch (error) {
+        console.error("فشل تحميل البيانات", error);
+      } finally {
+        setLoading(false);
+      }
     }
-    // راح تحصلين هذه الفانكشن في ملف src/pages/admin/TeachersManagement.jsx
-    if (activePage === "إدارة المعلمين") {
-      return <TeachersManagement />;
-    }
-    if (activePage === "إدارة المرشدين") {
-      return <PrinciplesManagement />;
-    }
-    if (activePage === "إدارة الصفوف") {
-      return <ClassesManagement />;
-    }
-    if (activePage === "تعيين طلاب") {
-      return <StudentAssignment />;
-    }
-    if (activePage === "Dashboard") {
-      return (
-        <div  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          <div className="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#5196ac]">
-            <h3 className="text-xl font-semibold text-[#5196ac] mb-2">
-              الطلاب
-            </h3>
-            <p className="text-3xl font-bold text-gray-700">20</p>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#5196ac]">
-            <h3 className="text-xl font-semibold text-[#5196ac] mb-2">
-              المعلمين
-            </h3>
-            <p className="text-3xl font-bold text-gray-700">5</p>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#5196ac]">
-            <h3 className="text-xl font-semibold text-[#5196ac] mb-2">
-              الأعذار
-            </h3>
-            <p className="text-3xl font-bold text-gray-700">7</p>
-          </div>
-          <div className="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#5196ac]">
-            <h3 className="text-xl font-semibold text-[#5196ac] mb-2">
-              الغيابات
-            </h3>
-            <p className="text-3xl font-bold text-gray-700">7</p>
-          </div>
+    fetchData();
+  }, []);
+
+  const dashboardItems = [
+    { label: "الطلاب", count: counts.students },
+    { label: "المعلمين", count: counts.teachers },
+    { label: "المرشدين", count: counts.principles },
+    { label: "الأعذار", count: counts.excuses },
+  ];
+
+  const renderDashboard = () => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+      {dashboardItems.map(({ label, count }) => (
+        <div
+          key={label}
+          className="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#5196ac]"
+        >
+          <h3 className="text-xl font-semibold text-[#5196ac] mb-2">{label}</h3>
+          <p className="text-3xl font-bold text-gray-700">{count}</p>
         </div>
-      );
-    }
+      ))}
+    </div>
+  );
+
+  const renderContent = () => {
+    if (loading) return <div className="text-center p-10 text-lg">...جاري التحميل</div>;
+
+    if (activePage === "Dashboard") return renderDashboard();
+
+    const PageComponent = pageComponents[activePage];
+    if (PageComponent) return <PageComponent />;
 
     return (
       <div className="px-4 py-6 w-full max-w-4xl mx-auto">
