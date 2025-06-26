@@ -125,7 +125,11 @@ export default function StudentDashboard() {
               </span>
             </button>
           </div>
-          <h1 className="text-xl font-bold text-[#27465b]">Logo..</h1>
+        <img
+  src="/attendance-system-logo.png"
+  alt="Logo"
+  className="h-15 w-50 rounded-lg"
+/>
 
           <div className="md:hidden">
             <button onClick={() => setMenuOpen(!menuOpen)}>
