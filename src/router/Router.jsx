@@ -5,13 +5,9 @@ import PrincipleDashboard from "../pages/principle/PrincipleDashboard";
 import TeacherDashboard from "../pages/teacher/TeacherDashboard";
 import StudentDashboard from "../pages/student/StudentDashboard";
 import LoginPage from "../pages/LoginPage";
-
+import ProtectedRoute from "../pages/component/ProtectedRoute";
 function Layout() {
-  return (
-    <>
-      <Outlet />
-    </>
-  );
+  return <Outlet />;
 }
 
 const router = createBrowserRouter([
@@ -19,10 +15,38 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { path: "admin", element: <AdminDashboard /> },
-      { path: "principle", element: <PrincipleDashboard /> },
-      { path: "teacher", element: <TeacherDashboard /> },
-      { path: "student", element: <StudentDashboard /> },
+      {
+        path: "admin",
+        element: (
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "principle",
+        element: (
+          <ProtectedRoute>
+            <PrincipleDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "teacher",
+        element: (
+          <ProtectedRoute>
+            <TeacherDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "student",
+        element: (
+          <ProtectedRoute>
+            <StudentDashboard />
+          </ProtectedRoute>
+        ),
+      },
       { path: "login", element: <LoginPage /> },
     ],
   },
