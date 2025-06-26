@@ -25,7 +25,7 @@ import PrincipleAssignment from "./PrincipleAssignment";
 import ExcusesManagement from "./ExcusesManagement";
 import Reports from "./Reports.jsx";
 
-const API = "http://localhost:3000/api/users";
+const API = "/api/users";
 
 const menuItems = [
   { name: "Dashboard", icon: Home },
@@ -68,7 +68,9 @@ const AdminDashboard = () => {
   useEffect(() => {
     async function fetchData() {
       try {
+        console.log('Fetching data from:', API);
         const response = await axiosInstance.get(API);
+        console.log('Response received:', response);
         const data = response.data.data || response.data;
 
         setCounts({
