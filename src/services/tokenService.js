@@ -43,8 +43,25 @@ export const getUserFromToken = (token) => {
 
 
 
+export const isTokenExpired = (token) => {
+  try {
+    if (!token) {
+      return true;
+    }
 
+    const decoded = decodeToken(token);
+    
+    if (!decoded || !decoded.exp) {
+      return true;
+    }
 
+    const currentTime = Math.floor(Date.now() / 1000);
+    return decoded.exp < currentTime;
+  } catch (error) {
+    console.error('Error checking token expiration:', error);
+    return true;
+  }
+};
 
 export const validateToken = (token) => {
   try {
