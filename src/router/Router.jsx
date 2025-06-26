@@ -20,12 +20,11 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { path: "/", element: <Login /> },
+      { path: "/", element: <LoginPage /> },
       { path: "admin", element: <AdminDashboard /> },
       { path: "principle", element: <PrincipleDashboard /> },
       { path: "teacher", element: <TeacherDashboard /> },
       { path: "student", element: <StudentDashboard /> },
-      { path: "login", element: <LoginPage /> },
     ],
   },
 ]);

@@ -61,6 +61,16 @@ export const getTeachers = async () => {
   }
 };
 
+export const getTeacherProfile = async (teacherId) => {
+  try {
+    const response = await axiosInstance.get(`/api/users/user/${teacherId}`);
+    return response.data.data || response.data;
+  } catch (error) {
+    console.error("Error fetching teacher profile:", error);
+    throw error;
+  }
+};
+
 // Delete user
 export const deleteUser = async (id) => {
   try {
