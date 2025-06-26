@@ -1,6 +1,7 @@
 import { Menu, LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
+import axiosInstance from "../../services/axiosInstance";
 import {
   getAttendanceByTeacher,
   createAttendance,
@@ -33,8 +34,8 @@ const TeacherDashboard = () => {
 
   const fetchTeacherClasses = async () => {
     try {
-      const res = await fetch("https://attendance-system-api-wetn.onrender.com/api/classes");
-      const data = await res.json();
+      const res = await axiosInstance.get("/api/classes");
+      const data = res.data;
       const allClasses = data.classes || [];
       const myClasses = allClasses.filter(cls => cls.userId?._id === teacherId);
       setTeacherClasses(myClasses);
