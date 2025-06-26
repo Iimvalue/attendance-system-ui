@@ -5,17 +5,26 @@ const BASE_URL = "https://attendance-system-api-wetn.onrender.com/api/users";
 export const getAllStudents = async () => {
   const res = await axiosInstance.get(`${BASE_URL}`);
   console.log(axiosInstance);
-  
+
   return res.data.data || res.data;
 };
 
-
-
-export const addStudent = async (student) => {
-  const res = await axiosInstance.post(BASE_URL, { ...student, role: "student" });
-  return res.data;
+export const addStudent = async (studentData) => {
+  try {
+    const response = await axiosInstance.post("/api/users", {
+      email: studentData.email,
+      password: studentData.password,
+      role: "student",
+    });
+    return response.data;
+  } catch (error) {
+    console.error(
+      "❌ خطأ أثناء إضافة الطالب:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
 };
-
 export const updateStudent = async (id, data) => {
   const res = await axiosInstance.put(`${BASE_URL}/update/${id}`, data);
   return res.data;

@@ -26,16 +26,31 @@ const StudentManagement = () => {
   };
 
   const handleAddStudent = async () => {
-    if (!newStudent.name || !newStudent.email) {
-      return Swal.fire("خطأ", "يجب تعبئة جميع الحقول", "error");
-    }
-
     try {
-      const added = await addStudent(newStudent);
+      if (!newStudent.email || !newStudent.password) {
+        Swal.fire(
+          "تنبيه",
+          "يرجى تعبئة البريد الإلكتروني وكلمة المرور",
+          "warning"
+        );
+        return;
+      }
+
+      const added = await addStudent({
+        email: newStudent.email,
+        password: newStudent.password,
+        role: "student",
+      });
+
       setStudents((prev) => [...prev, added]);
-      setNewStudent({ name: "", email: "" });
-      Swal.fire("تمت الإضافة", "تم إضافة الطالب بنجاح", "success");
-    } catch {
+      setNewStudent({ name: "", email: "", password: "" });
+
+      Swal.fire("تم", "تمت إضافة الطالب بنجاح", "success");
+    } catch (error) {
+      console.error(
+        "📛 خطأ أثناء الإضافة:",
+        error.response?.data || error.message
+      );
       Swal.fire("خطأ", "حدث خطأ أثناء الإضافة", "error");
     }
   };
@@ -65,11 +80,19 @@ const StudentManagement = () => {
     const { value: formValues } = await Swal.fire({
       title: "تعديل الطالب",
       html: `
-        <input id="swal-name" class="swal2-input" placeholder="الاسم" value="${student.name}" />
-        <input id="swal-email" class="swal2-input" placeholder="البريد الإلكتروني" value="${student.email}" />
+        <input id="swal-name" class="swal2-input" placeholder="الاسم" value="${
+          student.name
+        }" />
+        <input id="swal-email" class="swal2-input" placeholder="البريد الإلكتروني" value="${
+          student.email
+        }" />
         <select id="swal-status" class="swal2-select">
-          <option value="true" ${student.assigned ? "selected" : ""}>يدرس</option>
-          <option value="false" ${!student.assigned ? "selected" : ""}>لا يدرس</option>
+          <option value="true" ${
+            student.assigned ? "selected" : ""
+          }>يدرس</option>
+          <option value="false" ${
+            !student.assigned ? "selected" : ""
+          }>لا يدرس</option>
         </select>
       `,
       focusConfirm: false,
@@ -97,7 +120,6 @@ const StudentManagement = () => {
 
   return (
     <div dir="rtl" className="max-w-6xl mx-auto space-y-6 px-4 py-6">
-
       <div className="bg-white p-4 rounded-xl shadow">
         <h3 className="text-xl font-bold text-[#5196ac] mb-4">إضافة طالب</h3>
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-wrap">
@@ -119,6 +141,15 @@ const StudentManagement = () => {
               setNewStudent({ ...newStudent, email: e.target.value })
             }
           />
+          <input
+            type="password"
+            placeholder="كلمة المرور"
+            className="border p-2 rounded w-full sm:w-auto flex-1"
+            value={newStudent.password || ""}
+            onChange={(e) =>
+              setNewStudent({ ...newStudent, password: e.target.value })
+            }
+          />
           <button
             className="bg-[#5196ac] text-white px-4 py-2 rounded w-full sm:w-auto"
             onClick={handleAddStudent}
@@ -127,7 +158,6 @@ const StudentManagement = () => {
           </button>
         </div>
       </div>
-
 
       <div className="bg-white p-4 rounded-xl shadow overflow-x-auto">
         <h3 className="text-xl font-bold text-[#5196ac] mb-4">قائمة الطلاب</h3>
