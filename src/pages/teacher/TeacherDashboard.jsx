@@ -33,10 +33,14 @@ const TeacherDashboard = () => {
 
   const fetchTeacherClasses = async () => {
     try {
-      const res = await fetch("https://attendance-system-api-wetn.onrender.com/api/classes");
+      const res = await fetch(
+        "https://attendance-system-api-wetn.onrender.com/api/classes"
+      );
       const data = await res.json();
       const allClasses = data.classes || [];
-      const myClasses = allClasses.filter(cls => cls.userId?._id === teacherId);
+      const myClasses = allClasses.filter(
+        (cls) => cls.userId?._id === teacherId
+      );
       setTeacherClasses(myClasses);
     } catch (error) {
       console.error("فشل في جلب الفصول:", error);
@@ -106,7 +110,11 @@ const TeacherDashboard = () => {
                 </span>
               </button>
             </div>
-            <h1 className="text-xl font-bold text-[#27465b]">Logo..</h1>
+            <img
+              src="/attendance-system-logo2.png"
+              alt="Logo"
+              className="h-10 w-50 rounded-lg"
+            />
             <div className="md:hidden">
               <button onClick={() => setMenuOpen(!menuOpen)}>
                 <Menu className="w-6 h-6 text-[#27465b]" />
@@ -132,7 +140,9 @@ const TeacherDashboard = () => {
       <div className="pt-24 pb-10 min-h-screen bg-gray-200 text-right">
         <div className="p-6 bg-white rounded-xl shadow-md overflow-hidden mx-5 md:mx-10">
           <div className="max-w-6xl mx-auto p-6 space-y-6">
-            <h2 className="sm:text-2xl text-lg font-bold text-[#5196ac]">لوحة تحكم المعلم</h2>
+            <h2 className="sm:text-2xl text-lg font-bold text-[#5196ac]">
+              لوحة تحكم المعلم
+            </h2>
 
             <div className="max-w-5xl mx-auto bg-white p-6 rounded-xl shadow space-y-4">
               <h2 className="text-lg font-semibold text-[#5196ac]">فصولك</h2>
@@ -154,7 +164,9 @@ const TeacherDashboard = () => {
 
             {selectedClass && students.length > 0 && (
               <div className="max-w-5xl mx-auto mt-10 bg-white p-6 rounded-xl shadow space-y-4">
-                <h2 className="text-lg font-semibold text-[#5196ac]">تسجيل حضور - {selectedClass.name}</h2>
+                <h2 className="text-lg font-semibold text-[#5196ac]">
+                  تسجيل حضور - {selectedClass.name}
+                </h2>
                 <table className="w-full mt-4 border text-center">
                   <thead>
                     <tr className="bg-gray-100">
@@ -164,12 +176,22 @@ const TeacherDashboard = () => {
                   </thead>
                   <tbody>
                     {students.map((enroll) => (
-                      <tr key={enroll._id} className="border-t hover:bg-gray-50">
+                      <tr
+                        key={enroll._id}
+                        className="border-t hover:bg-gray-50"
+                      >
                         <td className="py-2 px-4">{enroll.userId.name}</td>
                         <td>
                           <select
-                            value={attendanceData[enroll.userId._id] || "present"}
-                            onChange={(e) => handleStatusChange(enroll.userId._id, e.target.value)}
+                            value={
+                              attendanceData[enroll.userId._id] || "present"
+                            }
+                            onChange={(e) =>
+                              handleStatusChange(
+                                enroll.userId._id,
+                                e.target.value
+                              )
+                            }
                             className="border rounded p-1"
                           >
                             <option value="present">حاضر</option>
@@ -192,7 +214,9 @@ const TeacherDashboard = () => {
             )}
 
             <div className="mt-10 bg-white p-6 rounded-xl shadow space-y-4">
-              <h2 className="text-lg font-semibold text-[#5196ac]">سجلات الحضور</h2>
+              <h2 className="text-lg font-semibold text-[#5196ac]">
+                سجلات الحضور
+              </h2>
               {attendanceList.length === 0 ? (
                 <p className="text-gray-500">لا توجد سجلات حالياً</p>
               ) : (
