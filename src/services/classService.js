@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const API = "https://6836b885664e72d28e41d28e.mockapi.io/api/register";
-
+const API = "https://attendance-system-api-wetn.onrender.com/api/classes";
 
 export const getAllClasses = async () => {
   const res = await axios.get(API);

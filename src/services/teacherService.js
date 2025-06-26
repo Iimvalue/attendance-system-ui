@@ -1,3 +1,4 @@
+// services/teacherService.js
 import axiosInstance from "./axiosInstance";
 
 const BASE_URL = "/api/users";
@@ -18,17 +19,18 @@ export const updateTeacher = async (id, data) => {
 };
 
 export const deleteTeacher = async (id) => {
-  const res = await axiosInstance.delete(`${BASE_URL}/${id}`);
-  return res.data;
+
+  throw new Error("حذف المعلمين غير مدعوم حالياً في الباكند.");
 };
+
 export const assignTeachersToClass = async (classId, teacherIds) => {
   const requests = teacherIds.map((teacherId) =>
     axiosInstance.put(`/api/users/update/${teacherId}`, { classId })
   );
   return Promise.all(requests);
 };
-export const getUnassignedTeachers = async () => {
-  const res = await axiosInstance.get("/api/users?role=teacher");
 
+export const getUnassignedTeachers = async () => {
+  const res = await axiosInstance.get(`${BASE_URL}?role=teacher`);
   return (res.data.data || res.data).filter((teacher) => !teacher.classId);
 };
