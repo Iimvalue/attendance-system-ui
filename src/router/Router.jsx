@@ -6,6 +6,7 @@ import TeacherDashboard from "../pages/teacher/TeacherDashboard";
 import StudentDashboard from "../pages/student/StudentDashboard";
 import LoginPage from "../pages/LoginPage";
 import ProtectedRoute from "../pages/component/ProtectedRoute";
+
 function Layout() {
   return <Outlet />;
 }
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
+
+      { path: "/", element: <LoginPage /> },
+      { path: "login", element: <LoginPage /> },
+
       {
         path: "admin",
         element: (
@@ -47,7 +52,6 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      { path: "login", element: <LoginPage /> },
     ],
   },
 ]);
