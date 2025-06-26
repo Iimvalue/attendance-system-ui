@@ -14,7 +14,7 @@ const TeachersManagement = () => {
 
   useEffect(() => {
     loadTeachers();
-  }, []);
+  }, [teachers]);
 
   const loadTeachers = async () => {
     try {
@@ -44,14 +44,34 @@ const TeachersManagement = () => {
     const { value: formValues } = await Swal.fire({
       title: "تعديل المعلم",
       html: `
-        <input id="swal-name" class="swal2-input" placeholder="الاسم" value="${teacher.name}" />
-        <input id="swal-email" class="swal2-input" placeholder="البريد الإلكتروني" value="${teacher.email}" />
+        <input id="swal-email" class="swal2-input" type="email" placeholder="البريد الإلكتروني" value="${teacher.email}" />
+        <select id="swal-role" class="swal2-select">
+          <option value="">اختر الدور</option>
+          <option value="admin" ${teacher.role === 'admin' ? "selected" : ""}>مدير النظام</option>
+          <option value="principal" ${teacher.role === 'principal' ? "selected" : ""}>مدير المدرسة</option>
+          <option value="teacher" ${teacher.role === 'teacher' ? "selected" : ""}>معلم</option>
+          <option value="student" ${teacher.role === 'student' ? "selected" : ""}>طالب</option>
+        </select>
       `,
       focusConfirm: false,
       preConfirm: () => {
+        const email = document.getElementById("swal-email").value;
+        const role = document.getElementById("swal-role").value;
+        
+        // Basic validation
+        if (!email) {
+          Swal.showValidationMessage('يرجى إدخال البريد الإلكتروني');
+          return false;
+        }
+        if (!role) {
+          Swal.showValidationMessage('يرجى اختيار الدور');
+          return false;
+        }
+        
         return {
-          name: document.getElementById("swal-name").value,
-          email: document.getElementById("swal-email").value,
+          name: name,
+          email: email,
+          role: role
         };
       },
     });

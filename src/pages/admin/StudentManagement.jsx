@@ -14,7 +14,7 @@ const StudentManagement = () => {
 
   useEffect(() => {
     loadStudents();
-  }, []);
+  }, [students]);
 
   const loadStudents = async () => {
     try {
@@ -62,22 +62,38 @@ const StudentManagement = () => {
   };
 
   const handleEditStudent = async (student) => {
+    console.log(student);
+    
     const { value: formValues } = await Swal.fire({
-      title: "تعديل الطالب",
+      title: "تعديل المستخدم",
       html: `
-        <input id="swal-name" class="swal2-input" placeholder="الاسم" value="${student.name}" />
-        <input id="swal-email" class="swal2-input" placeholder="البريد الإلكتروني" value="${student.email}" />
-        <select id="swal-status" class="swal2-select">
-          <option value="true" ${student.assigned ? "selected" : ""}>يدرس</option>
-          <option value="false" ${!student.assigned ? "selected" : ""}>لا يدرس</option>
+        <input id="swal-email" class="swal2-input" type="email" placeholder="البريد الإلكتروني" value="${student.email}" />
+        <select id="swal-role" class="swal2-select">
+          <option value="">اختر الدور</option>
+          <option value="admin" ${student.role === 'admin' ? "selected" : ""}>مدير النظام</option>
+          <option value="principle" ${student.role === 'principel' ? "selected" : ""}>مدير المدرسة</option>
+          <option value="teacher" ${student.role === 'teacher' ? "selected" : ""}>معلم</option>
+          <option value="student" ${student.role === 'student' ? "selected" : ""}>طالب</option>
         </select>
       `,
       focusConfirm: false,
       preConfirm: () => {
+        const email = document.getElementById("swal-email").value;
+        const role = document.getElementById("swal-role").value;
+        
+        // Basic validation
+        if (!email) {
+          Swal.showValidationMessage('يرجى إدخال البريد الإلكتروني');
+          return false;
+        }
+        if (!role) {
+          Swal.showValidationMessage('يرجى اختيار الدور');
+          return false;
+        }
+        
         return {
-          name: document.getElementById("swal-name").value,
-          email: document.getElementById("swal-email").value,
-          assigned: document.getElementById("swal-status").value === "true",
+          email: email,
+          role: role
         };
       },
     });
