@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import {
   getAllExcuses,
   deleteExcuse,
-} from "../../services/excuseService";
+} from "../../services/leaveService";
 
 export default function ExcusesManagement() {
   const [excuses, setExcuses] = useState([]);

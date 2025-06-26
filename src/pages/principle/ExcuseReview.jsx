@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
-import { submitExcuse } from "../../services/excuseService";
+import { submitExcuse } from "../../services/leaveService";
 
 export default function SubmitExcuse() {
   const [excuse, setExcuse] = useState({
