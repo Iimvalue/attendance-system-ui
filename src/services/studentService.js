@@ -1,11 +1,15 @@
 import axiosInstance from "./axiosInstance";
 
-const BASE_URL = "/api/users";
+const BASE_URL = "https://attendance-system-api-wetn.onrender.com/api/users";
 
 export const getAllStudents = async () => {
-  const res = await axiosInstance.get(`${BASE_URL}?role=student`);
+  const res = await axiosInstance.get(`${BASE_URL}`);
+  console.log(axiosInstance);
+  
   return res.data.data || res.data;
 };
+
+
 
 export const addStudent = async (student) => {
   const res = await axiosInstance.post(BASE_URL, { ...student, role: "student" });

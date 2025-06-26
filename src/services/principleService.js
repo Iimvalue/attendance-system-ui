@@ -1,43 +1,35 @@
-import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
-const BASE_URL = "https://6836b885664e72d28e41d28e.mockapi.io/api/register";
-
+const BASE_URL = "/api/users";
 
 export const getUnassignedPrinciples = async () => {
-  const res = await axios.get(BASE_URL);
-  return res.data.filter(
-    (item) => item.role === "principle" && item.assigned === false
-  );
-};
+  const res = await axiosInstance.get(`${BASE_URL}?role=principle`);
 
+  return (res.data.data || res.data).filter(item => !item.classId);
+};
 
 export const assignPrinciplesToClass = async (classId, principleIds) => {
   const requests = principleIds.map((id) =>
-    axios.put(`${BASE_URL}/${id}`, {
+    axiosInstance.put(`${BASE_URL}/update/${id}`, {
       classId,
-      assigned: true,
     })
   );
   return Promise.all(requests);
 };
 
-
 export const getAllPrinciples = async () => {
-  const res = await axios.get(BASE_URL);
-  return res.data.filter((item) => item.role === "principle");
+  const res = await axiosInstance.get(`${BASE_URL}?role=principle`);
+  return res.data.data || res.data;
 };
-
 
 export const addPrinciple = async (principle) => {
-  const res = await axios.post(BASE_URL, {
+  const res = await axiosInstance.post(BASE_URL, {
     ...principle,
     role: "principle",
-    assigned: false,
   });
-  return res.data;
+  return res.data.data || res.data;
 };
 
-
 export const deletePrinciple = async (id) => {
-  await axios.delete(`${BASE_URL}/${id}`);
+  await axiosInstance.delete(`${BASE_URL}/${id}`);
 };

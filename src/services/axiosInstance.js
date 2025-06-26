@@ -1,9 +1,12 @@
+// services/axiosInstance.js
 import axios from "axios";
 import { getValidToken, isTokenExpired } from "./tokenService";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",
+  baseURL: "https://attendance-system-api-wetn.onrender.com",
 });
+
 
 axiosInstance.interceptors.request.use(
   (config) => {

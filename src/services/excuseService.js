@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://6836b885664e72d28e41d28e.mockapi.io/api/register";
+const API_URL = "https://attendance-system-api-wetn.onrender.com//api/classes/attendance";
 
 export const updateExcuseStatus = async (id, status) => {
   const response = await axios.put(
