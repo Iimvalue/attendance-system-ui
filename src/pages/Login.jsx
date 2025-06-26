@@ -23,7 +23,8 @@ const Login = () => {
       const res = await axios.post("", {
         email,
         password,
-      });
+      },{});    
+        //  },{headers}); //
 // باث التوكن من الداتا
     //   const token = res.data.data.accessToken;
     //   const role = res.data.data.role; 

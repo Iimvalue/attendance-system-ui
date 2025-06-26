@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://6836b885664e72d28e41d28e.mockapi.io/api/register";
+const BASE_URL = "https://attendance-system-api-wetn.onrender.com";
 
 
 export const getAllTeachers = async () => {
