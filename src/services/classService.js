@@ -1,20 +1,26 @@
-import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
-const API = "https://attendance-system-api-wetn.onrender.com/api/classes";
+const API = "/api/classes";
 
 export const getAllClasses = async () => {
-  const res = await axios.get(API);
-  return res.data.filter((item) => item.role === "class");
-};
+  const res = await axiosInstance.get(API);
 
+  console.log("📦 رد السيرفر للصفوف:", res.data);
+
+  const classes = res.data.data?.classes;
+
+  if (!Array.isArray(classes)) {
+    throw new Error("البيانات المستلمة من السيرفر ليست مصفوفة");
+  }
+
+  return classes;
+};
 
 export const addClass = async (data) => {
-  const res = await axios.post(API, { ...data, role: "class" });
-  return res.data;
+  const res = await axiosInstance.post(API, data);
+  return res.data.data || res.data;
 };
-
 
 export const deleteClass = async (id) => {
-  await axios.delete(`${API}/${id}`);
+  await axiosInstance.delete(`${API}/${id}`);
 };
-
