@@ -1,4 +1,3 @@
-// pages/admin/PrincipleAssignment.jsx
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { getAllClasses } from "../../services/classService";
@@ -93,7 +92,7 @@ export default function PrincipleAssignment() {
                   onChange={() => togglePrincipleSelection(principle.id)}
                 />
                 <label htmlFor={`principle-${principle.id}`}>
-                  {principle.name}
+                  {principle.email}
                 </label>
               </div>
             ))}

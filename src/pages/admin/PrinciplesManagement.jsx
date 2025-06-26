@@ -8,36 +8,30 @@ import {
 
 export default function PrinciplesManagement() {
   const [principles, setPrinciples] = useState([]);
-  const [newPrinciple, setNewPrinciple] = useState({ name: "", email: "" });
+  const [newPrinciple, setNewPrinciple] = useState({ email: "", password: "" });
 
   useEffect(() => {
     getAllPrinciples().then(setPrinciples);
   }, []);
 
   const handleAdd = async () => {
-    if (!newPrinciple.name || !newPrinciple.email) {
+    if (!newPrinciple.email || !newPrinciple.password) {
       Swal.fire({
         icon: "error",
         title: "خطأ",
-        text: "جميع الحقول مطلوبة",
+        text: "يرجى تعبئة البريد الإلكتروني وكلمة المرور",
       });
       return;
     }
 
-    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // if (!emailRegex.test(newPrinciple.email)) {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "بريد غير صالح",
-    //     text: "يرجى إدخال بريد إلكتروني صحيح",
-    //   });
-    //   return;
-    // }
-
     try {
-      const added = await addPrinciple(newPrinciple);
+      const added = await addPrinciple({
+        email: newPrinciple.email,
+        password: newPrinciple.password,
+        role: "principle",
+      });
       setPrinciples((prev) => [...prev, added]);
-      setNewPrinciple({ name: "", email: "" });
+      setNewPrinciple({ email: "", password: "" });
 
       Swal.fire({
         icon: "success",
@@ -82,21 +76,21 @@ export default function PrinciplesManagement() {
         <h3 className="text-xl font-bold text-[#5196ac] mb-4">إضافة مرشد</h3>
         <div className="flex flex-col sm:flex-row gap-4">
           <input
-            type="text"
-            placeholder="اسم المرشد"
-            className="border p-2 rounded w-full"
-            value={newPrinciple.name}
-            onChange={(e) =>
-              setNewPrinciple({ ...newPrinciple, name: e.target.value })
-            }
-          />
-          <input
             type="email"
             placeholder="البريد الإلكتروني"
             className="border p-2 rounded w-full"
             value={newPrinciple.email}
             onChange={(e) =>
               setNewPrinciple({ ...newPrinciple, email: e.target.value })
+            }
+          />
+          <input
+            type="password"
+            placeholder="كلمة المرور"
+            className="border p-2 rounded w-full"
+            value={newPrinciple.password || ""}
+            onChange={(e) =>
+              setNewPrinciple({ ...newPrinciple, password: e.target.value })
             }
           />
           <button
@@ -114,19 +108,21 @@ export default function PrinciplesManagement() {
           <thead>
             <tr className="bg-[#5196ac] text-white">
               <th className="py-2 px-4">الرقم</th>
-              <th className="py-2 px-4">الاسم</th>
               <th className="py-2 px-4">البريد الإلكتروني</th>
               <th className="py-2 px-4">إجراء</th>
             </tr>
           </thead>
           <tbody>
+            {principles.length === 0 && (
+              <tr>
+                <td colSpan="3" className="py-4 text-gray-500">
+                  لا يوجد مرشدين حالياً
+                </td>
+              </tr>
+            )}
             {principles.map((p, index) => (
-              <tr
-                key={p.id}
-                className="border-t hover:bg-gray-50 transition"
-              >
+              <tr key={p.id} className="border-t hover:bg-gray-50 transition">
                 <td className="py-2 px-4">{index + 1}</td>
-                <td className="py-2 px-4">{p.name}</td>
                 <td className="py-2 px-4">{p.email}</td>
                 <td className="py-2 px-4">
                   <button
@@ -138,13 +134,6 @@ export default function PrinciplesManagement() {
                 </td>
               </tr>
             ))}
-            {principles.length === 0 && (
-              <tr>
-                <td colSpan="4" className="py-4 text-gray-500">
-                  لا يوجد مرشدين حالياً
-                </td>
-              </tr>
-            )}
           </tbody>
         </table>
       </div>

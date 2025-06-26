@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { getAllClasses } from "../../services/classService";
-import { getUnassignedStudents, assignStudentsToClass, getUnassignedStudents as fetchUnassignedStudents } from "../../services/studentService";
+import {
+  getUnassignedStudents,
+  assignStudentsToClass,
+} from "../../services/studentService";
 
 const StudentAssignment = () => {
   const [classes, setClasses] = useState([]);
@@ -12,7 +15,7 @@ const StudentAssignment = () => {
   useEffect(() => {
     async function loadData() {
       const classesData = await getAllClasses();
-      const studentsData = await fetchUnassignedStudents();
+      const studentsData = await getUnassignedStudents();
       setClasses(classesData);
       setStudents(studentsData);
     }
@@ -44,7 +47,7 @@ const StudentAssignment = () => {
         title: "تم التعيين",
         text: `تم تعيين ${selectedStudents.length} طالب(طالب) للصف المحدد`,
       });
-      const updatedStudents = await fetchUnassignedStudents();
+      const updatedStudents = await getUnassignedStudents();
       setStudents(updatedStudents);
       setSelectedClassId("");
       setSelectedStudents([]);
@@ -86,7 +89,9 @@ const StudentAssignment = () => {
                   checked={selectedStudents.includes(student.id)}
                   onChange={() => toggleStudentSelection(student.id)}
                 />
-                <label htmlFor={`student-${student.id}`}>{student.name}</label>
+                <label htmlFor={`student-${student.id}`}>
+                  {student.email}
+                </label>
               </div>
             ))}
           </div>

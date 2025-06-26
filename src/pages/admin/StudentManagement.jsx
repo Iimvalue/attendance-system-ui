@@ -10,7 +10,7 @@ import { Pencil, Trash2 } from "lucide-react";
 
 const StudentManagement = () => {
   const [students, setStudents] = useState([]);
-  const [newStudent, setNewStudent] = useState({ name: "", email: "" });
+  const [newStudent, setNewStudent] = useState({ email: "", password: "" });
 
   useEffect(() => {
     loadStudents();
@@ -43,7 +43,7 @@ const StudentManagement = () => {
       });
 
       setStudents((prev) => [...prev, added]);
-      setNewStudent({ name: "", email: "", password: "" });
+      setNewStudent({ email: "", password: "" });
 
       Swal.fire("تم", "تمت إضافة الطالب بنجاح", "success");
     } catch (error) {
@@ -80,25 +80,15 @@ const StudentManagement = () => {
     const { value: formValues } = await Swal.fire({
       title: "تعديل الطالب",
       html: `
-        <input id="swal-name" class="swal2-input" placeholder="الاسم" value="${
-          student.name
-        }" />
-        <input id="swal-email" class="swal2-input" placeholder="البريد الإلكتروني" value="${
-          student.email
-        }" />
+        <input id="swal-email" class="swal2-input" placeholder="البريد الإلكتروني" value="${student.email}" />
         <select id="swal-status" class="swal2-select">
-          <option value="true" ${
-            student.assigned ? "selected" : ""
-          }>يدرس</option>
-          <option value="false" ${
-            !student.assigned ? "selected" : ""
-          }>لا يدرس</option>
+          <option value="true" ${student.assigned ? "selected" : ""}>يدرس</option>
+          <option value="false" ${!student.assigned ? "selected" : ""}>لا يدرس</option>
         </select>
       `,
       focusConfirm: false,
       preConfirm: () => {
         return {
-          name: document.getElementById("swal-name").value,
           email: document.getElementById("swal-email").value,
           assigned: document.getElementById("swal-status").value === "true",
         };
@@ -123,15 +113,6 @@ const StudentManagement = () => {
       <div className="bg-white p-4 rounded-xl shadow">
         <h3 className="text-xl font-bold text-[#5196ac] mb-4">إضافة طالب</h3>
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-wrap">
-          <input
-            type="text"
-            placeholder="اسم الطالب"
-            className="border p-2 rounded w-full sm:w-auto flex-1"
-            value={newStudent.name}
-            onChange={(e) =>
-              setNewStudent({ ...newStudent, name: e.target.value })
-            }
-          />
           <input
             type="email"
             placeholder="البريد الإلكتروني"
@@ -165,7 +146,7 @@ const StudentManagement = () => {
           <thead>
             <tr className="bg-[#5196ac] text-white">
               <th className="py-2 px-3">ID</th>
-              <th className="py-2 px-3">الاسم</th>
+              {/* حذف عمود الاسم */}
               <th className="py-2 px-3">البريد الإلكتروني</th>
               <th className="py-2 px-3">الحالة</th>
               <th className="py-2 px-3">إجراءات</th>
@@ -174,7 +155,7 @@ const StudentManagement = () => {
           <tbody>
             {students.length === 0 ? (
               <tr>
-                <td colSpan="5" className="py-4 text-gray-500">
+                <td colSpan="4" className="py-4 text-gray-500">
                   لا يوجد طلاب حالياً
                 </td>
               </tr>
@@ -185,7 +166,7 @@ const StudentManagement = () => {
                   className="border-t hover:bg-gray-50 transition"
                 >
                   <td className="py-2 px-3">{student.id}</td>
-                  <td className="py-2 px-3">{student.name}</td>
+                  {/* حذف عمود الاسم */}
                   <td className="py-2 px-3">{student.email}</td>
                   <td className="py-2 px-3">
                     <span
