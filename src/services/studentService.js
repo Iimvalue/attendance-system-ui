@@ -19,7 +19,7 @@ export const updateStudent = async (id, data) => {
 };
 
 export const deleteStudent = async (id) => {
-  await axiosInstance.delete(`/api/users/user/${id}`);
+  await axiosInstance.delete(`/api/users/delete/${id}`);
  };
 export const assignStudentsToClass = async (classId, studentIds) => {
   const requests = studentIds.map((studentId) =>

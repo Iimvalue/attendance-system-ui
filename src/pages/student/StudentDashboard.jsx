@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { getStudentProfile } from "../../services/studentService";
-import { getStudentExcuses, submitExcuse } from "../../services/excuseService";
+import { getStudentExcuses, submitExcuse } from "../../services/leaveService";
 import LoadingSpinner from "../component/LoadingSpinner";
 import { Menu } from "lucide-react";
 import { LogOut } from "lucide-react";

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { getAllExcuses, updateExcuseStatus } from "../../services/excuseService";
+import { getAllExcuses, updateExcuseStatus } from "../../services/leaveService";
 import { getAllStudents } from "../../services/studentService";
 import LoadingSpinner from "../component/LoadingSpinner";
 
@@ -19,7 +19,7 @@ export default function Reports() {
         setExcuses(excusesData);
         setStudents(studentsData);
       } catch (error) {
-        Swal.fire("خطأ", "فشل تحميل البيانات", "error");
+        Swal.fire("خطأ", "فشل تحميل البيانات", error);
       } finally {
         setLoading(false);
       }
@@ -42,8 +42,8 @@ export default function Reports() {
         const updated = await getAllExcuses();
         setExcuses(updated);
         Swal.fire("تم", "تم تحديث حالة العذر", "success");
-      } catch (err) {
-        Swal.fire("خطأ", "فشل تحديث الحالة", "error");
+      } catch (error) {
+        Swal.fire("خطأ", "فشل تحديث الحالة", error);
       }
     }
   };
