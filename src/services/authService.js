@@ -1,10 +1,8 @@
-import axios from "axios";
+import axiosInstance from "./axiosInstance";
 import { validateToken, getUserFromToken, getValidToken } from "./tokenService";
 
-const API_URL = `${import.meta.env.VITE_BASE_URL || "http://localhost:3000"}/api/auth`;
-
 export const signin = async (email, password) => {
-  const response = await axios.post(`${API_URL}/signin`, { email, password });
+  const response = await axiosInstance.post("/api/auth/signin", { email, password });
 
   const token = response.data.data.accessToken;
   const refreshToken = response.data.data.refreshToken;
@@ -40,11 +38,7 @@ export const signout = async () => {
   
   if (token) {
     try {
-      await axios.post(
-        `${API_URL}/signout`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await axiosInstance.post("/api/auth/signout");
     } catch (error) {
       console.warn("Error during signout request:", error);
     }
@@ -66,7 +60,7 @@ export const refreshToken = async () => {
       throw new Error("لا يوجد رمز تحديث متاح");
     }
 
-    const response = await axios.post(`${API_URL}/refresh`, {
+    const response = await axiosInstance.post("/api/auth/refresh", {
       refreshToken: refreshToken
     });
 

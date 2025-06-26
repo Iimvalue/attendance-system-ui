@@ -4,11 +4,16 @@ import { getValidToken, isTokenExpired } from "./tokenService";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    
     const token = getValidToken();
     
     if (token) {
@@ -44,6 +49,13 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     
+    console.error('API Request failed:', {
+      url: error.config?.url,
+      method: error.config?.method,
+      status: error.response?.status,
+      data: error.response?.data
+    });
+    
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       
@@ -51,10 +63,14 @@ axiosInstance.interceptors.response.use(
         const refreshToken = localStorage.getItem("refreshToken");
         
         if (refreshToken) {
-          const refreshResponse = await axios.post(
-            `${axiosInstance.defaults.baseURL}/api/auth/refresh`,
-            { refreshToken }
-          );
+          // Create a separate axios instance for the refresh call to avoid interceptor loops
+          const refreshResponse = await axios.create({
+            baseURL: axiosInstance.defaults.baseURL,
+            timeout: 10000,
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }).post('/api/auth/refresh', { refreshToken });
           
           const newToken = refreshResponse.data.data.accessToken;
           const newRefreshToken = refreshResponse.data.data.refreshToken;

@@ -2,7 +2,6 @@ import axiosInstance from "./axiosInstance";
 
 export const getAllStudents = async () => {
   const res = await axiosInstance.get("/api/users");
-  console.log(axiosInstance);
   
   return res.data.data || res.data;
 };
@@ -19,12 +18,9 @@ export const updateStudent = async (id, data) => {
   return res.data;
 };
 
-// export const deleteStudent = async (id) => {
-//   await axiosInstance.delete(`/api/users/user/${id}`);
-// };
 export const deleteStudent = async (id) => {
   await axiosInstance.delete(`/api/users/user/${id}`);
-};
+ };
 export const assignStudentsToClass = async (classId, studentIds) => {
   const requests = studentIds.map((studentId) =>
     axiosInstance.put(`/api/users/update/${studentId}`, { classId })

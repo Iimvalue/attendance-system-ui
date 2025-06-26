@@ -5,7 +5,7 @@ const API = "/api/classes";
 export const getAllClasses = async () => {
   const res = await axiosInstance.get(API);
 
-  console.log("📦 رد السيرفر للصفوف:", res.data);
+  console.log("رد السيرفر للصفوف:", res.data);
 
   const classes = res.data.data?.classes;
 

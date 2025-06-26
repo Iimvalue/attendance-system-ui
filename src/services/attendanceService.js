@@ -1,32 +1,26 @@
-import axios from "axios";
-
-// const BASE_URL = "https://attendance-system-api-mihy.onrender.com/api/classes/attendance";
-// const ENROLLMENT_URL = "https://attendance-system-api-mihy.onrender.com/api/enrollments";
-
-// https://attendance-system-api-wetn.onrender.com
-
+import axiosInstance from "./axiosInstance";
 
 export const createAttendance = async (data) => {
-  const response = await axios.post(BASE_URL, data);
+  const response = await axiosInstance.post("/api/classes/attendance", data);
   return response.data;
 };
 
 export const getAttendanceByTeacher = async (teacherId) => {
-  const response = await axios.get(`${BASE_URL}?attenderId=${teacherId}`);
+  const response = await axiosInstance.get(`/api/classes/attendance?attenderId=${teacherId}`);
   return response.data;
 };
 
 export const updateAttendance = async (id, data) => {
-  const response = await axios.put(`${BASE_URL}/${id}`, data);
+  const response = await axiosInstance.put(`/api/classes/attendance/${id}`, data);
   return response.data;
 };
 
 export const deleteAttendance = async (id) => {
-  const response = await axios.delete(`${BASE_URL}/${id}`);
+  const response = await axiosInstance.delete(`/api/classes/attendance/${id}`);
   return response.data;
 };
 
 export const getStudentsInClass = async (classId) => {
-  const response = await axios.get(`${ENROLLMENT_URL}/class/${classId}`);
+  const response = await axiosInstance.get(`/api/enrollments/class/${classId}`);
   return response.data;
 };
