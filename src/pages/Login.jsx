@@ -25,8 +25,8 @@ const Login = () => {
         password,
       });
 // باث التوكن من الداتا
-    //   const token = res.data.data.accessToken;
-    //   const role = res.data.data.role; 
+      const token = res.data.data.accessToken;
+      const role = res.data.data.role; 
 
       if (token && role) {
         localStorage.setItem("Token", token);
