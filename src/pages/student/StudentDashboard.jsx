@@ -17,9 +17,6 @@ export default function StudentDashboard() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const token = localStorage.getItem("Token");
-  const role = localStorage.getItem("role");
-
   // useEffect(() => {
   //   if (!token || role !== "student") {
   //     navigate("/");
@@ -42,7 +39,7 @@ export default function StudentDashboard() {
         setStudent(studentData);
         setExcuses(excusesData);
       } catch (error) {
-        Swal.fire("خطأ", "فشل تحميل البيانات", "error");
+        Swal.fire("خطأ", "فشل تحميل البيانات", error);
       } finally {
         setLoading(false);
       }
@@ -83,7 +80,7 @@ export default function StudentDashboard() {
         Swal.fire("تم الإرسال", "تم رفع العذر بنجاح", "success");
         const updated = await getStudentExcuses(student.id);
         setExcuses(updated);
-      } catch (err) {
+      } catch {
         Swal.fire("خطأ", "فشل رفع العذر", "error");
       }
     }
