@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
-import { submitExcuse } from "../../services/excuseService";
+import { submitExcuse } from "../../services/leaveService";
 
 export default function SubmitExcuse() {
   const [excuse, setExcuse] = useState({
@@ -24,7 +24,7 @@ export default function SubmitExcuse() {
       Swal.fire("تم الإرسال", "تم إرسال العذر بنجاح", "success");
       setExcuse({ studentId: "", reason: "", date: "" });
     } catch (error) {
-      Swal.fire("خطأ", "حدث خطأ أثناء إرسال العذر", "error");
+      Swal.fire("خطأ", "حدث خطأ أثناء إرسال العذر", error);
     }
   };
 

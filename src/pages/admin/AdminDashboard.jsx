@@ -25,7 +25,7 @@ import PrincipleAssignment from "./PrincipleAssignment";
 import ExcusesManagement from "./ExcusesManagement";
 import Reports from "./Reports.jsx";
 
-const API = "http://localhost:3000/api/users";
+const API = "/api/users";
 
 const menuItems = [
   { name: "Dashboard", icon: Home },
@@ -68,7 +68,9 @@ const AdminDashboard = () => {
   useEffect(() => {
     async function fetchData() {
       try {
+        console.log('Fetching data from:', API);
         const response = await axiosInstance.get(API);
+        console.log('Response received:', response);
         const data = response.data.data || response.data;
 
         setCounts({
@@ -145,23 +147,23 @@ const AdminDashboard = () => {
           لوحة التحكم
         </div>
         <ul className="p-4 space-y-2">
-          {menuItems.map(({ name, icon: Icon }) => (
+          {menuItems.map((item) => (
             <li
-              key={name}
+              key={item.name}
               className={classNames(
                 "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors duration-200",
                 {
-                  "bg-[#5196ac] text-white shadow-md": activePage === name,
-                  "text-white hover:bg-[#5196AC] hover:opacity-80": activePage !== name,
+                  "bg-[#5196ac] text-white shadow-md": activePage === item.name,
+                  "text-white hover:bg-[#5196AC] hover:opacity-80": activePage !== item.name,
                 }
               )}
               onClick={() => {
-                setActivePage(name);
+                setActivePage(item.name);
                 setSidebarOpen(false);
               }}
             >
-              <Icon size={20} />
-              <span>{name}</span>
+              <item.icon size={20} />
+              <span>{item.name}</span>
             </li>
           ))}
         </ul>
