@@ -147,23 +147,23 @@ const AdminDashboard = () => {
           لوحة التحكم
         </div>
         <ul className="p-4 space-y-2">
-          {menuItems.map(({ name, icon: Icon }) => (
+          {menuItems.map((item) => (
             <li
-              key={name}
+              key={item.name}
               className={classNames(
                 "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors duration-200",
                 {
-                  "bg-[#5196ac] text-white shadow-md": activePage === name,
-                  "text-white hover:bg-[#5196AC] hover:opacity-80": activePage !== name,
+                  "bg-[#5196ac] text-white shadow-md": activePage === item.name,
+                  "text-white hover:bg-[#5196AC] hover:opacity-80": activePage !== item.name,
                 }
               )}
               onClick={() => {
-                setActivePage(name);
+                setActivePage(item.name);
                 setSidebarOpen(false);
               }}
             >
-              <Icon size={20} />
-              <span>{name}</span>
+              <item.icon size={20} />
+              <span>{item.name}</span>
             </li>
           ))}
         </ul>
