@@ -10,7 +10,7 @@ import { Pencil, Trash2 } from "lucide-react";
 
 const StudentManagement = () => {
   const [students, setStudents] = useState([]);
-  const [newStudent, setNewStudent] = useState({ name: "", email: "" });
+  const [newStudent, setNewStudent] = useState({ email: "", password: "" });
 
   useEffect(() => {
     loadStudents();
@@ -26,16 +26,31 @@ const StudentManagement = () => {
   };
 
   const handleAddStudent = async () => {
-    if (!newStudent.name || !newStudent.email) {
-      return Swal.fire("خطأ", "يجب تعبئة جميع الحقول", "error");
-    }
-
     try {
-      const added = await addStudent(newStudent);
+      if (!newStudent.email || !newStudent.password) {
+        Swal.fire(
+          "تنبيه",
+          "يرجى تعبئة البريد الإلكتروني وكلمة المرور",
+          "warning"
+        );
+        return;
+      }
+
+      const added = await addStudent({
+        email: newStudent.email,
+        password: newStudent.password,
+        role: "student",
+      });
+
       setStudents((prev) => [...prev, added]);
-      setNewStudent({ name: "", email: "" });
-      Swal.fire("تمت الإضافة", "تم إضافة الطالب بنجاح", "success");
-    } catch {
+      setNewStudent({ email: "", password: "" });
+
+      Swal.fire("تم", "تمت إضافة الطالب بنجاح", "success");
+    } catch (error) {
+      console.error(
+        "📛 خطأ أثناء الإضافة:",
+        error.response?.data || error.message
+      );
       Swal.fire("خطأ", "حدث خطأ أثناء الإضافة", "error");
     }
   };
@@ -113,19 +128,9 @@ const StudentManagement = () => {
 
   return (
     <div dir="rtl" className="max-w-6xl mx-auto space-y-6 px-4 py-6">
-
       <div className="bg-white p-4 rounded-xl shadow">
         <h3 className="text-xl font-bold text-[#5196ac] mb-4">إضافة طالب</h3>
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-wrap">
-          <input
-            type="text"
-            placeholder="اسم الطالب"
-            className="border p-2 rounded w-full sm:w-auto flex-1"
-            value={newStudent.name}
-            onChange={(e) =>
-              setNewStudent({ ...newStudent, name: e.target.value })
-            }
-          />
           <input
             type="email"
             placeholder="البريد الإلكتروني"
@@ -133,6 +138,15 @@ const StudentManagement = () => {
             value={newStudent.email}
             onChange={(e) =>
               setNewStudent({ ...newStudent, email: e.target.value })
+            }
+          />
+          <input
+            type="password"
+            placeholder="كلمة المرور"
+            className="border p-2 rounded w-full sm:w-auto flex-1"
+            value={newStudent.password || ""}
+            onChange={(e) =>
+              setNewStudent({ ...newStudent, password: e.target.value })
             }
           />
           <button
@@ -144,14 +158,13 @@ const StudentManagement = () => {
         </div>
       </div>
 
-
       <div className="bg-white p-4 rounded-xl shadow overflow-x-auto">
         <h3 className="text-xl font-bold text-[#5196ac] mb-4">قائمة الطلاب</h3>
         <table className="min-w-[600px] w-full text-center text-sm">
           <thead>
             <tr className="bg-[#5196ac] text-white">
               <th className="py-2 px-3">ID</th>
-              <th className="py-2 px-3">الاسم</th>
+              {/* حذف عمود الاسم */}
               <th className="py-2 px-3">البريد الإلكتروني</th>
               <th className="py-2 px-3">الحالة</th>
               <th className="py-2 px-3">إجراءات</th>
@@ -160,7 +173,7 @@ const StudentManagement = () => {
           <tbody>
             {students.length === 0 ? (
               <tr>
-                <td colSpan="5" className="py-4 text-gray-500">
+                <td colSpan="4" className="py-4 text-gray-500">
                   لا يوجد طلاب حالياً
                 </td>
               </tr>
@@ -171,7 +184,7 @@ const StudentManagement = () => {
                   className="border-t hover:bg-gray-50 transition"
                 >
                   <td className="py-2 px-3">{student.id}</td>
-                  <td className="py-2 px-3">{student.name}</td>
+                  {/* حذف عمود الاسم */}
                   <td className="py-2 px-3">{student.email}</td>
                   <td className="py-2 px-3">
                     <span

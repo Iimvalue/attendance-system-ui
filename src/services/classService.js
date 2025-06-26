@@ -53,3 +53,22 @@ export const deleteClass = async (id) => {
     throw error;
   }
 };
+
+export const unassignUserFromClass = async (userId) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No token found, user might not be logged in.");
+
+    const response = await axios.put(
+      `${API_BASE_URL}/unassign`,
+      { userId },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Failed to unassign user:", error);
+    throw error;
+  }
+};

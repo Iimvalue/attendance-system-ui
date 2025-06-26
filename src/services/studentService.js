@@ -12,7 +12,6 @@ export const addStudent = async (student) => {
   const res = await axiosInstance.post("/api/users", { ...student, role: "student" });
   return res.data;
 };
-
 export const updateStudent = async (id, data) => {
   const res = await axiosInstance.put(`/api/users/update/${id}`, data);
   return res.data;

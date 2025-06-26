@@ -70,7 +70,7 @@ export default function ExcusesManagement() {
         <thead>
           <tr className="bg-[#5196ac] text-white">
             <th className="py-2 px-4">#</th>
-            <th className="py-2 px-4">رقم الطالب</th>
+            <th className="py-2 px-4">البريد الإلكتروني للطالب</th>
             <th className="py-2 px-4">التاريخ</th>
             <th className="py-2 px-4">السبب</th>
             <th className="py-2 px-4">الحالة</th>
@@ -79,9 +79,9 @@ export default function ExcusesManagement() {
         </thead>
         <tbody>
           {filteredExcuses.map((e, idx) => (
-            <tr key={e.id} className="border-t hover:bg-gray-50">
+            <tr key={e.id || e._id} className="border-t hover:bg-gray-50">
               <td className="py-2 px-4">{idx + 1}</td>
-              <td className="py-2 px-4">{e.studentId || "-"}</td>
+              <td className="py-2 px-4">{e.studentId?.email || "-"}</td>
               <td className="py-2 px-4">{e.date}</td>
               <td className="py-2 px-4">{e.reason}</td>
               <td className="py-2 px-4">
@@ -93,7 +93,7 @@ export default function ExcusesManagement() {
               </td>
               <td className="py-2 px-4">
                 <button
-                  onClick={() => handleDelete(e.id)}
+                  onClick={() => handleDelete(e.id || e._id)}
                   className="text-red-600 hover:underline"
                 >
                   حذف

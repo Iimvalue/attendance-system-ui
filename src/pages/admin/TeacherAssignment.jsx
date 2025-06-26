@@ -5,7 +5,7 @@ import {
   getUnassignedTeachers,
   assignTeachersToClass,
 } from "../../services/teacherService";
-// import { assignTeachersToClass } from "../../services/teacherService";
+
 export default function TeacherAssignment() {
   const [teachers, setTeachers] = useState([]);
   const [classes, setClasses] = useState([]);
@@ -93,7 +93,9 @@ export default function TeacherAssignment() {
                   checked={selectedTeachers.includes(teacher.id)}
                   onChange={() => toggleTeacherSelection(teacher.id)}
                 />
-                <label htmlFor={`teacher-${teacher.id}`}>{teacher.name}</label>
+                <label htmlFor={`teacher-${teacher.id}`}>
+                  {teacher.email}
+                </label>
               </div>
             ))}
           </div>
